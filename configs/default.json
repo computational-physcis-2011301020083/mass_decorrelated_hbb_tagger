@@ -1,0 +1,54 @@
+{
+    "classifier": {
+      	"model": {
+      	    "default": {
+            	"units":      64,
+            	"activation": "relu",
+            	"batchnorm":  true
+      	    },
+      	    "architecture": 3
+      	},
+      	"fit": {
+      	    "epochs":     200,
+      	    "batch_size": 8192,
+      	    "shuffle":    true
+      	},
+      	"compile" : {
+      	    "loss":      "binary_crossentropy",
+      	    "lr":        1.0E-02,
+      	    "decay":     1.0E-03,
+      	    "optimizer": "Adam"
+      	}
+    },
+    "adversary": {
+      	"model": {
+      	    "default": {
+            	"units":      64,
+            	"activation": "relu"
+      	    },
+      	    "architecture": 1,
+      	    "gmm_components": 20
+      	},
+      	"fit": {},
+      	"compile": {}
+    },
+    "combined": {
+	"pretrain": 10,
+      	"model": {
+      	    "lambda_reg": 10.0,
+      	    "lr_ratio" : null
+      	},
+      	"fit": {
+      	    "epochs": 200,
+      	    "batch_size": 8192,
+      	    "shuffle": true
+      	},
+      	"compile": {
+            "loss":         ["binary_crossentropy", null],
+      	    "loss_weights": [2.0E-07, 1.0E+00],
+            "lr":           5.0E-02,
+            "decay":        1.0E-02,
+            "optimizer":    "Adam"
+      	}
+    }
+}
