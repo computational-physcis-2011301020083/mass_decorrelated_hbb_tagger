@@ -72,7 +72,7 @@ def main (args):
 
     # -- Adversarial neural network (ANN) scan
     lambda_reg  = 10.
-    lambda_regs = sorted([1., 3., 10.])
+    lambda_regs = sorted([10.])
     ann_vars    = list()
     lambda_strs = list()
     for lambda_reg_ in lambda_regs:
@@ -172,7 +172,7 @@ def perform_studies (data, args, tagger_features, ann_vars):
     """
     Method delegating performance studies.
     """
-    masscuts  = [True, False]
+    masscuts  = [False, True]
     pt_ranges = [None, (200, 500), (500, 1000), (1000, 2000)]
 
     # Perform combined robustness study
@@ -215,20 +215,20 @@ def perform_studies (data, args, tagger_features, ann_vars):
             studies.roc(data, args, tagger_features, masscut=masscut, pt_range=pt_range)
             pass
         pass
+    
+    # # Perform JSD study
+    # with Profile("Study: JSD"):
+    #     for pt_range in pt_ranges:
+    #         studies.jsd(data, args, tagger_features, pt_range)
+    #         pass
+    #     pass
 
-    # Perform JSD study
-    with Profile("Study: JSD"):
-        for pt_range in pt_ranges:
-            studies.jsd(data, args, tagger_features, pt_range)
-            pass
-        pass
-
-    # Perform efficiency study
-    with Profile("Study: Efficiency"):
-        for feat in tagger_features:
-            studies.efficiency(data, args, feat)
-            pass
-        pass
+    # # Perform efficiency study
+    # with Profile("Study: Efficiency"):
+    #     for feat in tagger_features:
+    #         studies.efficiency(data, args, feat)
+    #         pass
+    #     pass
 
     return
 

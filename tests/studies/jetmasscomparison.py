@@ -300,12 +300,12 @@ def plot_individual (*argv):
                     pass
 
                 # -- Legend(s)
-                y =  0.46  if first else 0.68
-                dy = 0.025 if first else 0.04
-                c.legend(width=0.25, xmin=0.63, ymax=y)
-                c.latex("Tagged multijets:", NDC=True, x=0.87, y=y + dy, textcolor=ROOT.kGray + 3, textsize=style.GetLegendTextSize() * 0.9, align=31)
-                c.pad()._legends[-1].SetMargin(0.35)
-                c.pad()._legends[-1].SetTextSize(style.GetLegendTextSize())
+                # y =  0.46  if first else 0.68
+                # dy = 0.025 if first else 0.04
+                # c.legend(width=0.25, xmin=0.63, ymax=y)
+                # c.latex("Tagged multijets:", NDC=True, x=0.87, y=y + dy, textcolor=ROOT.kGray + 3, textsize=style.GetLegendTextSize() * 0.9, align=31)
+                # c.pad()._legends[-1].SetMargin(0.35)
+                # c.pad()._legends[-1].SetTextSize(style.GetLegendTextSize())
 
                 # Formatting pads
                 tpad = c.pad()._bare()

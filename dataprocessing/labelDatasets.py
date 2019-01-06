@@ -50,30 +50,45 @@ for sourceDataset in sourceDatasets:
     print "processing " + sourceDataset
 
     filePath = "./datasets/" + sourceDataset
-    key = "fat_jet"
 
-    df = pd.read_hdf(filePath, key)
+    fatjet_key = "fat_jet"
+
+    fatjet_columns = ["Tau21_wta", "C2", "D2", "Angularity", "Aplanarity", "FoxWolfram20", "KtDR", "PlanarFlow", "Split12", "ZCut12", "mcEventWeight", "mass", "pt", "label"]
+
+    df = pd.read_hdf(filePath, fatjet_key)
 
     isHiggsSample = "H" in sourceDataset
 
     df["label"] = df.apply(lambda row: label_row(row, isHiggsSample), axis=1)
 
-    newDf = df[df["label"] != "ignore"]
-    newDf = newDf[["Tau21_wta", "C2", "D2", "Angularity", "Aplanarity", "FoxWolfram20", "KtDR", "PlanarFlow", "Split12", "ZCut12", "mcEventWeight", "mass", "pt", "label"]]
+    ignore_msk = df["label"] != "ignore"
+
+    newDf = df[ignore_msk][fatjet_columns]
 
     newDf["pt"] = (newDf["pt"]/1000.0).astype("float64")
 
     newDf["m"] = (newDf["mass"]/1000.0).astype("float64")
     newDf = newDf.drop("mass", axis=1)
 
-    newDf["Tau21"] = newDf["Tau21_wta"]
-    newDf = newDf.drop("Tau21_wta", axis=1)
+    newDf.rename(columns={"Tau21_wta": "Tau21", "mcEventWeight": "weight_test"}, inplace=True)
 
-    newDf["weight_test"] = newDf["mcEventWeight"]
-    newDf = newDf.drop("mcEventWeight", axis=1)
+    newDf["signal"] = newDf.apply(lambda row: isHbb(row["label"]), axis=1).astype("int32")
 
-    newDf["signal"] = newDf.apply(lambda row: isHbb(row["label"]), axis=1)
+    float_subjet_columns = ['IP2D_pb', 'IP2D_pc', 'IP2D_pu', 'IP3D_pb', 'IP3D_pc', 'IP3D_pu', 'JetFitter_dRFlightDir', 'JetFitter_deltaeta','JetFitter_deltaphi', 'JetFitter_energyFraction', 'JetFitter_mass', 'JetFitter_massUncorr', 'JetFitter_significance3d','SV1_L3d', 'SV1_Lxy', 'SV1_deltaR', 'SV1_dstToMatLay', 'SV1_efracsvx', 'SV1_masssvx', 'SV1_significance3d', 'deta', 'dphi', 'dr', 'eta', 'pt', 'rnnip_pb', 'rnnip_pc', 'rnnip_ptau', 'rnnip_pu']
 
+    int_subjet_columns = ['JetFitter_nSingleTracks','JetFitter_nTracksAtVtx', 'JetFitter_nVTX', 'JetFitter_N2Tpair', 'SV1_N2Tpair', 'SV1_NGTinSvx']
+    for i in [1, 2]:
+        subjet_key = "subjet_VRGhostTag_{}".format(i)
+
+        column_name_dict = {}
+        for subjet_column in float_subjet_columns + int_subjet_columns:
+            newColumnName = "{}_{}".format(subjet_column, i)
+            column_name_dict[subjet_column] = newColumnName
+
+        df_subjet =  pd.concat([pd.read_hdf(filePath, subjet_key)[ignore_msk][float_subjet_columns].astype("float32"), pd.read_hdf(filePath, subjet_key)[ignore_msk][int_subjet_columns].astype("int32")], axis=1)
+        newDf = pd.concat([newDf, df_subjet.rename(columns=column_name_dict)], axis=1)
+
+    newDf.dropna(inplace=True)
     # will need these in the future
     # newDf["IsHbb"] = newDf["signal"]
     # newDf["IsGbb"] = newDf.apply(lambda row: isGbb(row["label"]), axis=1)
@@ -85,7 +100,7 @@ for sourceDataset in sourceDatasets:
     totalNumEvent = totalNumEvent + numEvent
     totalNumSignal = totalNumSignal + numSignal
 
-    newDfFilePath = "./processedDatasets/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
+    newDfFilePath = "./processedDatasets_xbbscore_reformat/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
 
     print "saving " + newDfFilePath
     print "total number of events: " + str(totalNumEvent)
@@ -94,7 +109,6 @@ for sourceDataset in sourceDatasets:
 
 print "total number of events: " + str(totalNumEvent)
 print "total number of signal: " + str(totalNumSignal)
-
 
 
 

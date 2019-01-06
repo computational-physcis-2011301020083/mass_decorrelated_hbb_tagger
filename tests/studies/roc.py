@@ -83,6 +83,23 @@ def roc (data_, args, features, masscut=False, pt_range=(200, 2000)):
     AUCs = dict()
     for feat in features:
         sign = -1. if signal_low(feat) else 1.
+
+        print "feat: "
+        print feat
+
+        print "true values:"
+        print data['signal'].values
+        
+        print "predicted values:"
+        print data[feat]    .values * sign
+
+        print "weights:"
+        print data['weight_test'].values
+
+        print "x: "
+        print ROCs[feat][0]
+        print len(ROCs[feat])
+
         AUCs[feat] = roc_auc_score(data['signal'].values,
                                    data[feat]    .values * sign,
                                    sample_weight=data['weight_test'].values)

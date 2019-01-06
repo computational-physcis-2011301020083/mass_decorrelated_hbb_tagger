@@ -146,7 +146,7 @@ def plot (*argv):
                 colour = rp.colours[(ifeat // 2) % len(rp.colours)]
                 linestyle   =  1 + (ifeat % 2)
                 markerstyle = 20 + (ifeat % 2) * 4
-                c.plot(jsd[feat], bins=np.array(effs) / 100., linecolor=colour, markercolor=colour, linestyle=linestyle, markerstyle=markerstyle, label=latex(feat, ROOT=True), option='PL')
+                c.plot(jsd[feat][1:], bins=np.array(effs[1:]) / 100., linecolor=colour, markercolor=colour, linestyle=linestyle, markerstyle=markerstyle, label=latex(feat, ROOT=True), option='PL')
                 pass
 
             c.legend(header=("Analytical:" if is_simple else "MVA:"),
@@ -155,6 +155,7 @@ def plot (*argv):
 
         # Meaningful limits on JSD
         x,y,ey = map(np.array, zip(*jsd_limits))
+
         ex = np.zeros_like(ey)
         gr = ROOT.TGraphErrors(len(x), x, y, ex, ey)
         smooth_tgrapherrors(gr, ntimes=2)
@@ -173,7 +174,7 @@ def plot (*argv):
 
         c.latex("Maximal sculpting", 0.065, 1.2, align=11, textsize=11, textcolor=ROOT.kGray + 2)
         c.xlim(0, 1)
-        c.ymin(5E-05)
+        c.ymin(1E-05)
         c.padding(0.45)
         c.logy()
 

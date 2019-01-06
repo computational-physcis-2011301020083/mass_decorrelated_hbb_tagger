@@ -48,7 +48,7 @@ def main ():
     print "Reading and reweighting, splitting files in:\n  {}".format(args.dir)
 
     # paths = sorted(glob.glob(args.dir + '*/*_slim.h5'))
-    paths = sorted(glob.glob("./processedDatasets/*.h5"))
+    paths = sorted(glob.glob("./d/*.h5"))
 
 
     print "Found {} files.".format(len(paths))
@@ -61,13 +61,10 @@ def main ():
         queue = multiprocessing.Queue()
         parts = run_batched(FileLoader, list(enumerate(paths)), queue=queue, max_processes=args.max_processes)
         
-        zipped = zip(*sorted(parts, key=lambda t: t[0]))
-        print zipped
-        
-        print zipped[1]
+        data = np.lib.recfunctions.stack_arrays(zip(*sorted(parts, key=lambda t: t[0]))[1], autoconvert=True, usemask=False)
 
         # Concatenate data in sorted order, for reproducibility
-        data = np.concatenate(zipped[1])
+        # data = np.concatenate(zip(*sorted(parts, key=lambda t: t[0]))[1])
         pass
     
     print "Found {} samples.".format(data.shape[0])
@@ -184,7 +181,7 @@ def main ():
 
     # Writing output HDF5 file
     with Profile("Writing output HDF5 file"):
-        save_hdf5(data,  './reweightDatasets/data_{}M_{}M.h5'.format(args.train, args.test))
+        save_hdf5(data,  './reweightDatasets/data_{}M_{}M_xbbscore.h5'.format(args.train, args.test))
         pass
 
     return

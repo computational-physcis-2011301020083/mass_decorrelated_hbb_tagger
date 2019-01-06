@@ -201,19 +201,16 @@ def showsave (f):
         c, args, path = f(*args, **kwargs)
 
         # Save
-        if args.save:
-            dir = '/'.join(path.split('/')[:-1])
-            mkdir(dir)
-            suffix = path.split('.')[-1]
-            if len(suffix) < 4:
-                base = '.'.join(path.split('.')[:-1])
-                c.save(base + '.eps')
-                c.save(base + '.pdf')
-                c.save(base + '.C')
-            else:
-                c.save(path)
-                pass
-
+        dir = '/'.join(path.split('/')[:-1])
+        mkdir(dir)
+        suffix = path.split('.')[-1]
+        if len(suffix) < 4:
+            base = '.'.join(path.split('.')[:-1])
+            c.save(base + '.eps')
+            c.save(base + '.pdf')
+            c.save(base + '.C')
+        else:
+            c.save(path)
             pass
 
         # Show
