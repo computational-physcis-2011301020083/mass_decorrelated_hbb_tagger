@@ -83,23 +83,6 @@ def roc (data_, args, features, masscut=False, pt_range=(200, 2000)):
     AUCs = dict()
     for feat in features:
         sign = -1. if signal_low(feat) else 1.
-
-        print "feat: "
-        print feat
-
-        print "true values:"
-        print data['signal'].values
-        
-        print "predicted values:"
-        print data[feat]    .values * sign
-
-        print "weights:"
-        print data['weight_test'].values
-
-        print "x: "
-        print ROCs[feat][0]
-        print len(ROCs[feat])
-
         AUCs[feat] = roc_auc_score(data['signal'].values,
                                    data[feat]    .values * sign,
                                    sample_weight=data['weight_test'].values)
@@ -148,26 +131,25 @@ def plot (*argv):
     c.hist(np.power(centres, -1.), bins=edges, linecolor=ROOT.kGray + 2, fillcolor=ROOT.kBlack, alpha=0.05, linewidth=1, option='HISTC')
 
     # -- ROCs
-    for is_simple in [True, False]:
 
-        # Split the legend into simple- and MVA taggers
-        for ifeat, feat in filter(lambda t: is_simple == signal_low(t[1]), enumerate(features)):
-            eff_sig, eff_bkg = ROCs[feat]
-            c.graph(np.power(eff_bkg, -1.), bins=eff_sig, linestyle=1 + (ifeat % 2), linecolor=rp.colours[(ifeat // 2) % len(rp.colours)], linewidth=2, label=latex(feat, ROOT=True), option='L')
-            pass
-
-        # Draw class-specific legend
-        width = 0.17
-        c.legend(header=("Analytical:" if is_simple else "MVA:"),
-                 width=width, xmin=0.58 + (width) * (is_simple), ymax=0.888)
+    # Split the legend into simple- and MVA taggers
+    for ifeat, feat in filter(lambda t: 0 == signal_low(t[1]), enumerate(features)):
+        eff_sig, eff_bkg = ROCs[feat]
+        c.graph(np.power(eff_bkg, -1.), bins=eff_sig, linestyle=1 + (ifeat % 2), linecolor=rp.colours[(ifeat // 2) % len(rp.colours)], linewidth=2, label=latex(feat, ROOT=True), option='L')
         pass
+
+    # Draw class-specific legend
+    width = 0.17
+    c.legend(width=width, xmin=0.58, ymax=0.888)
+
+    pass
 
     # Decorations
     c.xlabel("Signal efficiency #varepsilon_{sig}^{rel}")
     c.ylabel("Background rejection 1/#varepsilon_{bkg}^{rel}")
     c.text([], xmin=0.15, ymax=0.96, qualifier=QUALIFIER)
     c.text(["#sqrt{s} = 13 TeV",
-            "#it{W} jet tagging"] + (
+            "#it{Hbb} jet tagging"] + (
                 ["p_{{T}} #in  [{:.0f}, {:.0f}] GeV".format(pt_range[0], pt_range[1])] if pt_range is not None else []
             ) + (
                 ["Cut: m #in  [60, 100] GeV"] if masscut else []
@@ -179,7 +161,7 @@ def plot (*argv):
 
     c.latex("Random guessing", 0.4, 1./0.4 * 0.9, align=23, angle=-12 + 2 * ranges, textsize=13, textcolor=ROOT.kGray + 2)
     c.xlim(0.2, 1.)
-    c.ylim(1E+00, 5E+02 * mult)
+    c.ylim(1E+00, 1E+04 * mult)
     c.logy()
     c.legend()
 

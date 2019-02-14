@@ -326,7 +326,7 @@ def plot_adversarial_training_loss (lambda_reg, num_folds, pretrain_epochs, H_pr
     c.pads()[0].text([], xmin=0.2, ymax=0.85, qualifier=QUALIFIER)
 
     c.pads()[1].text(["#sqrt{s} = 13 TeV",
-                      "#it{W} jet tagging",
+                      "#it{Hbb} jet tagging",
                       "Adversarial training (#lambda = %s)" % (lambda_str.replace('p', '.'))
                       ], ATLAS=False, ymax=0.70, xmin=0.27)
     c.pads()[0].legend(xmin=0.60, ymax=0.70, categories=categories)

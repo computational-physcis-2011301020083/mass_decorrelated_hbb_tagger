@@ -15,7 +15,7 @@ import rootplotting as rp
 
 
 @showsave
-def jetmasscomparison(data, args, features, eff_sig=50):
+def jetmasscomparison_mv2c10(data, args, features, eff_sig=50):
     """
     Perform study of jet mass distributions before and after subtructure cut for
     different substructure taggers.
@@ -113,7 +113,7 @@ def plot (*argv):
             pass
 
         c.pads()[0].legend(header='Inclusive selection:', categories=[
-            ("Dijets",   histstyle[False]),
+            ("Top",   histstyle[False]),
             ("#it{Hbb} jets", histstyle[True])
             ], xmin=0.18, width= 0.60, ymax=0.28 + 0.07, ymin=0.001 + 0.07)
         c.pads()[0]._legends[-1].SetTextSize(style.GetLegendTextSize())
@@ -141,7 +141,7 @@ def plot (*argv):
             offsetx = (0.20 if ipad % 2 else 0.05)
             offsety =  0.20 * ((2 - (ipad // 2)) / float(2.))
             pad.legend(width=0.25, xmin=0.68 - offsetx, ymax=0.80 - offsety)
-            pad.latex("Tagged dijets:", NDC=True, x=0.93 - offsetx, y=0.84 - offsety, textcolor=ROOT.kGray + 3, textsize=style.GetLegendTextSize() * 0.8, align=31)
+            pad.latex("Tagged top:", NDC=True, x=0.93 - offsetx, y=0.84 - offsety, textcolor=ROOT.kGray + 3, textsize=style.GetLegendTextSize() * 0.8, align=31)
 
             if len(pad._legends) > 0:
                 pad._legends[-1].SetMargin(0.35)
@@ -186,7 +186,7 @@ def plot (*argv):
         # c.pads()[2].ylabel("#splitline{#splitline{#splitline{#splitline{Fraction of jets}{}}{}}{}}{#splitline{#splitline{}{}}{#splitline{#splitline{}{}}{#splitline{}{}}}}")
         # I have written a _lot_ of ugly code, but this ^ is probably the worst.
 
-        c.pads()[0].text(["#sqrt{s} = 13 TeV,  #it{Hbb} jet tagging",
+        c.pads()[0].text(["#sqrt{s} = 13 TeV,  #it{W} jet tagging",
                     "Cuts at #varepsilon_{sig}^{rel} = %.0f%%" % eff_sig,
                     ], xmin=0.2, ymax=0.72, qualifier=QUALIFIER)
 
@@ -238,7 +238,10 @@ def plot_individual (*argv):
         # Loop features
         ts  = style.GetTextSize()
         lts = style.GetLegendTextSize()
-        for ifeat, feats in enumerate([None] + list(zip(features[::2], features[1::2])), start=-1):
+
+        # for ifeat, feats in enumerate([None] + list(zip(features[::2], features[1::2])), start=-1):
+        for ifeat, feats in enumerate([None] + ["MV2c10"], start=-1):
+
             first = ifeat == -1
 
             # Style
@@ -253,10 +256,11 @@ def plot_individual (*argv):
             if first:
                 opts = dict(xmin=0.185, width=0.60)
                 c.legend(header=' ', categories=[
-                            ("Dijets",   histstyle[False]),
+                            ("Top",   histstyle[False]),
                             ("#it{Hbb} jets", histstyle[True])
                         ], ymax=0.45, **opts)
-                c.legend(header='Inclusive selection:', ymax=0.40, **opts)
+                c.legend(header='Inclusive selection:',
+                         ymax=0.40, **opts)
                 #c.pad()._legends[-2].SetTextSize(style.GetLegendTextSize())
                 #c.pad()._legends[-1].SetTextSize(style.GetLegendTextSize())
                 c.pad()._legends[-2].SetMargin(0.35)
@@ -288,9 +292,13 @@ def plot_individual (*argv):
                     pass
 
                 # -- Tagged
-                for jfeat, feat in enumerate(feats):
+                for jfeat, feat in enumerate(["MV2c10"]):
                     opts = dict(
-                        linecolor = rp.colours[((2 * ifeat + jfeat) // 2)],
+
+                        linecolor = rp.colours[1],
+                        # uncomment this
+                        # linecolor = rp.colours[((2 * ifeat + jfeat) // 2)],
+
                         linestyle = 1 + 6 * (jfeat % 2),
                         linewidth = 4,
                         )

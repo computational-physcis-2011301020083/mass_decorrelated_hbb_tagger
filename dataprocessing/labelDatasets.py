@@ -38,7 +38,7 @@ def isQcd(row_label):
         return 0
 
 
-with open("./dataprocessing/expandedDatasets.txt", "rU") as f:
+with open("./dataprocessing/expandedHbbTopDatasets.txt", "rU") as f:
     lines = f.readlines()
 
 sourceDatasets = [x.strip() for x in lines]
@@ -49,11 +49,10 @@ totalNumSignal = 0
 for sourceDataset in sourceDatasets:
     print "processing " + sourceDataset
 
-    filePath = "./datasets/" + sourceDataset
+    filePath = "./hbbTopDatasets/" + sourceDataset
 
     fatjet_key = "fat_jet"
-
-    fatjet_columns = ["Tau21_wta", "C2", "D2", "Angularity", "Aplanarity", "FoxWolfram20", "KtDR", "PlanarFlow", "Split12", "ZCut12", "mcEventWeight", "mass", "pt", "label"]
+    fatjet_columns = ["Tau32_wta", "e3", "Qw", "eta", "Tau21_wta", "C2", "D2", "Angularity", "Aplanarity", "FoxWolfram20", "KtDR", "PlanarFlow", "Split12", "ZCut12", "mcEventWeight", "eventNumber", "mass", "pt", "label"]
 
     df = pd.read_hdf(filePath, fatjet_key)
 
@@ -70,11 +69,11 @@ for sourceDataset in sourceDatasets:
     newDf["m"] = (newDf["mass"]/1000.0).astype("float64")
     newDf = newDf.drop("mass", axis=1)
 
-    newDf.rename(columns={"Tau21_wta": "Tau21", "mcEventWeight": "weight_test"}, inplace=True)
+    newDf.rename(columns={"Tau21_wta": "Tau21", "Tau32_wta": "Tau32", "mcEventWeight": "weight_test"}, inplace=True)
 
     newDf["signal"] = newDf.apply(lambda row: isHbb(row["label"]), axis=1).astype("int32")
 
-    float_subjet_columns = ['IP2D_pb', 'IP2D_pc', 'IP2D_pu', 'IP3D_pb', 'IP3D_pc', 'IP3D_pu', 'JetFitter_dRFlightDir', 'JetFitter_deltaeta','JetFitter_deltaphi', 'JetFitter_energyFraction', 'JetFitter_mass', 'JetFitter_massUncorr', 'JetFitter_significance3d','SV1_L3d', 'SV1_Lxy', 'SV1_deltaR', 'SV1_dstToMatLay', 'SV1_efracsvx', 'SV1_masssvx', 'SV1_significance3d', 'deta', 'dphi', 'dr', 'eta', 'pt', 'rnnip_pb', 'rnnip_pc', 'rnnip_ptau', 'rnnip_pu']
+    float_subjet_columns = ['MV2c10_discriminant', 'MV2c10mu_discriminant', 'MV2c10rnn_discriminant', 'DL1_pu', 'DL1_pc', 'DL1_pb', 'DL1rnn_pu', 'DL1rnn_pc', 'DL1rnn_pb', 'IP2D_pb', 'IP2D_pc', 'IP2D_pu', 'IP3D_pb', 'IP3D_pc', 'IP3D_pu', 'JetFitter_dRFlightDir', 'JetFitter_deltaeta','JetFitter_deltaphi', 'JetFitter_energyFraction', 'JetFitter_mass', 'JetFitter_massUncorr', 'JetFitter_significance3d','SV1_L3d', 'SV1_Lxy', 'SV1_deltaR', 'SV1_dstToMatLay', 'SV1_efracsvx', 'SV1_masssvx', 'SV1_significance3d', 'deta', 'dphi', 'dr', 'eta', 'pt', 'rnnip_pb', 'rnnip_pc', 'rnnip_ptau', 'rnnip_pu']
 
     int_subjet_columns = ['JetFitter_nSingleTracks','JetFitter_nTracksAtVtx', 'JetFitter_nVTX', 'JetFitter_N2Tpair', 'SV1_N2Tpair', 'SV1_NGTinSvx']
     for i in [1, 2]:
@@ -100,7 +99,7 @@ for sourceDataset in sourceDatasets:
     totalNumEvent = totalNumEvent + numEvent
     totalNumSignal = totalNumSignal + numSignal
 
-    newDfFilePath = "./processedDatasets_xbbscore_reformat/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
+    newDfFilePath = "./processedDatasets_xbbscore_reformat_hbbDijetsnumEvents/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
 
     print "saving " + newDfFilePath
     print "total number of events: " + str(totalNumEvent)

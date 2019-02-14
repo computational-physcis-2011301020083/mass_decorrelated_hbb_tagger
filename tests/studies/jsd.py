@@ -168,7 +168,7 @@ def plot (*argv):
         c.xlabel("Background efficiency #varepsilon_{bkg}^{rel}")
         c.ylabel("Mass correlation, JSD")
         c.text([], xmin=0.15, ymax = 0.96, qualifier=QUALIFIER)
-        c.text(["#sqrt{s} = 13 TeV",  "Multijets"] + \
+        c.text(["#sqrt{s} = 13 TeV",  "Dijets"] + \
               (["p_{T} [GeV] #in", "    [{:.0f}, {:.0f}]".format(*pt_range)] if pt_range else []),
                ymax=0.85, ATLAS=None)
 

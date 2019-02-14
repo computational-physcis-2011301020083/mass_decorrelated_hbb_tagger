@@ -96,6 +96,9 @@ def main (args):
     # Regulsarisation parameter
     lambda_reg = cfg['combined']['model']['lambda_reg']  # Use same `lambda` as the adversary
     digits = int(np.ceil(max(-np.log10(lambda_reg), 0)))
+
+    # digits = 1
+
     lambda_str = '{l:.{d:d}f}'.format(d=digits,l=lambda_reg).replace('.', 'p')
 
     # Get standard-formatted decorrelation inputs
