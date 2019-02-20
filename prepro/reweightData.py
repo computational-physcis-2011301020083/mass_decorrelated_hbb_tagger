@@ -48,7 +48,7 @@ def main ():
     print "Reading and reweighting, splitting files in:\n  {}".format(args.dir)
 
     # paths = sorted(glob.glob(args.dir + '*/*_slim.h5'))
-    paths = sorted(glob.glob("./d/*.h5"))
+    paths = sorted(glob.glob("./extractedHbbTopDatasets/*.h5"))
 
 
     print "Found {} files.".format(len(paths))
@@ -74,7 +74,10 @@ def main ():
         for sig in [0,1]:
 
             # Select samples belonging to current category
-            msk = data['signal'] == sig
+            if sig == 0:
+                msk = (data['signal'] == 0) & (data["dsid"] > 360000)
+            else:
+                msk = (data["signal"] == 1)
 
             # Store reference of samples belonging to other category
             other = np.array(~msk).astype(bool)
@@ -138,7 +141,6 @@ def main ():
             # Compute new weights
             data['weight_adv'][msk] = reweighter.predict_weights(original, original_weight=original_weight)
 
-
             # Standardise weight variables
             # ------------------------------------------------------------------
             weight_variables = filter(lambda name: name.startswith('weight_'), data.dtype.names)
@@ -181,7 +183,7 @@ def main ():
 
     # Writing output HDF5 file
     with Profile("Writing output HDF5 file"):
-        save_hdf5(data,  './reweightDatasets/data_{}M_{}M_xbbscore.h5'.format(args.train, args.test))
+        save_hdf5(data,  './reweightDatasets/extractedData.h5')
         pass
 
     return

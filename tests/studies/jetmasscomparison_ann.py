@@ -15,7 +15,7 @@ import rootplotting as rp
 
 
 @showsave
-def jetmasscomparison(data, args, features, eff_sig=50):
+def jetmasscomparison_ann (data, args, features, eff_sig=50):
     """
     Perform study of jet mass distributions before and after subtructure cut for
     different substructure taggers.
@@ -256,7 +256,8 @@ def plot_individual (*argv):
                             ("Dijets",   histstyle[False]),
                             ("#it{Hbb} jets", histstyle[True])
                         ], ymax=0.45, **opts)
-                c.legend(header='Inclusive selection:', ymax=0.40, **opts)
+                c.legend(header='Inclusive selection:',
+                         ymax=0.40, **opts)
                 #c.pad()._legends[-2].SetTextSize(style.GetLegendTextSize())
                 #c.pad()._legends[-1].SetTextSize(style.GetLegendTextSize())
                 c.pad()._legends[-2].SetMargin(0.35)

@@ -1,6 +1,3 @@
-# adversarial
+# adversarial neural networks
 
-Tools for training and evaluating different methods for constructing
-mass-decorrelated jet substructure taggers, in particular adversarially trained
-neural networks. All information, guides, etc. can be found in the project
-[wiki](https://github.com/asogaard/adversarial/wiki).
+For training and evaluating mass-decorrelated Hbb vs. Dijets tagger and Hbb vs. Top tagger.

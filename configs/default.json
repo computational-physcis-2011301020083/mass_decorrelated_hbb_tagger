@@ -35,7 +35,7 @@
     "combined": {
 	"pretrain": 10,
       	"model": {
-      	    "lambda_reg": 10.0,
+      	    "lambda_reg": 100.0,
       	    "lr_ratio" : null
       	},
       	"fit": {

@@ -57,12 +57,6 @@ def main (args):
     # Load data
     data, features, _ = load_data(args.input + 'data.h5', test=True)
 
-
-    # Common definitions
-    # --------------------------------------------------------------------------
-    # -- k-nearest neighbour
-    kNN_var = 'D2-k#minusNN'
-
     def meaningful_digits (number):
         digits = 0
         if number > 0:
@@ -71,8 +65,8 @@ def main (args):
         return '{l:.{d:d}f}'.format(d=digits,l=number)
 
     # -- Adversarial neural network (ANN) scan
-    lambda_reg  = 10.
-    lambda_regs = sorted([10.])
+    lambda_reg  = 100.
+    lambda_regs = sorted([100.])
     ann_vars    = list()
     lambda_strs = list()
     for lambda_reg_ in lambda_regs:
@@ -88,34 +82,14 @@ def main (args):
     print "ann_var"
     print ann_var
 
-    # -- uBoost scan
-    # uboost_eff = 92
-    # uboost_ur  = 0.3
-    # uboost_urs = sorted([0., 0.01, 0.1, 0.3, 1.0])
-    # uboost_var  =  'uBoost(#alpha={:s})'.format(meaningful_digits(uboost_ur))
-    # uboost_vars = ['uBoost(#alpha={:s})'.format(meaningful_digits(ur)) for ur in uboost_urs]
-    # uboost_pattern = 'uboost_ur_{{:4.2f}}_te_{:.0f}_rel21_fixed'.format(uboost_eff)
-
     # Tagger feature collection
-    tagger_features = ['NN', ann_var]
-
+    # tagger_features = ['NN', ann_var]
+    tagger_features = ['NN', ann_var, 'MV2c10']
+    # tagger_features = ['MV2c10']
 
     # Add variables
     # --------------------------------------------------------------------------
     with Profile("Add variables"):
-
-        # # Tau21DDT
-        # from run.ddt.common import add_ddt
-        # add_ddt(data, path='models/ddt/ddt.pkl.gz')
-        #
-        # # D2-kNN
-        # from run.knn.common import add_knn, VAR as kNN_basevar, EFF as kNN_eff
-        # print "k-NN base variable: {} (cp. {})".format(kNN_basevar, kNN_var)
-        # add_knn(data, newfeat=kNN_var, path='models/knn/knn_{}_{}.pkl.gz'.format(kNN_basevar, kNN_eff))
-        #
-        # # D2-CSS
-        # from run.css.common import add_css
-        # add_css("D2", data)
 
         # NN
         from run.adversarial.common import add_nn
@@ -140,21 +114,12 @@ def main (args):
                 pass
             pass
 
-        # Adaboost/uBoost
-        # with Profile("Adaboost/uBoost"):
-        #     from run.uboost.common import add_bdt
-        #     for var, ur in zip(uboost_vars, uboost_urs):
-        #         var  = ('Adaboost' if ur == 0 else var)
-        #         path = 'models/uboost/' + uboost_pattern.format(ur).replace('.', 'p') + '.pkl.gz'
-        #         print "== Loading model for {}".format(var)
-        #         add_bdt(data, var, path)
-        #         pass
-        #
-        #     # Remove `Adaboost` from scan list
-        #     uboost_vars.pop(0)
-        #     pass
+        with Profile("MV2c10"):
+            data["MV2c10"] = pd.concat([data["MV2c10_discriminant_1"], data["MV2c10_discriminant_2"]], axis=1).min(axis=1)
 
-        # pass
+        # Add MV2 and XbbScore here
+        # e.g. min(MV2_sj1, MV2_sj2)
+
 
     # Remove unused variables
     used_variables = set(tagger_features + ann_vars + ['m', 'pt', 'npv', 'weight_test'])
@@ -210,18 +175,18 @@ def perform_studies (data, args, tagger_features, ann_vars):
     #     pass
 
     # Perform ROC study
-    with Profile("Study: ROC"):
-        for masscut, pt_range in itertools.product(masscuts, pt_ranges):
-            studies.roc(data, args, tagger_features, masscut=masscut, pt_range=pt_range)
-            pass
-        pass
-    
-    # # Perform JSD study
-    # with Profile("Study: JSD"):
-    #     for pt_range in pt_ranges:
-    #         studies.jsd(data, args, tagger_features, pt_range)
+    # with Profile("Study: ROC"):
+    #     for masscut, pt_range in itertools.product(masscuts, pt_ranges):
+    #         studies.roc(data, args, tagger_features, masscut=masscut, pt_range=pt_range)
     #         pass
     #     pass
+    
+    # # Perform JSD study
+    with Profile("Study: JSD"):
+        for pt_range in pt_ranges:
+            studies.jsd(data, args, tagger_features, pt_range)
+            pass
+        pass
 
     # # Perform efficiency study
     # with Profile("Study: Efficiency"):
