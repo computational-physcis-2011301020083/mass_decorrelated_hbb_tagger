@@ -1,7 +1,7 @@
 import pandas as pd
 import glob
 
-paths = glob.glob("./processedDatasets_xbbscore_reformat_hbbDijetsNumEvents/*.h5")
+paths = glob.glob("./labelledHbbTopDatasets/*.h5")
 
 i = 0
 for path in paths:
@@ -20,5 +20,5 @@ for path in paths:
 	df["dsid"] = fileName.split('_')[2]
 	df["dsid"] = df["dsid"].astype('int32')
 
-	newFilePath = "./xbbScorePtWeightExtractedHbbDijetsNumEvents/" + fileName
+	newFilePath = "./extractedHbbTopDatasets/" + fileName
 	df.to_hdf(newFilePath, "dataset", format="table", data_columns=True)

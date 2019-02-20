@@ -48,7 +48,7 @@ def main ():
     print "Reading and reweighting, splitting files in:\n  {}".format(args.dir)
 
     # paths = sorted(glob.glob(args.dir + '*/*_slim.h5'))
-    paths = sorted(glob.glob("./xbbScorePtWeightExtractedHbbDijetsWithCalculatedWeights/*.h5"))
+    paths = sorted(glob.glob("./extractedHbbTopDatasets/*.h5"))
 
 
     print "Found {} files.".format(len(paths))
@@ -183,7 +183,7 @@ def main ():
 
     # Writing output HDF5 file
     with Profile("Writing output HDF5 file"):
-        save_hdf5(data,  './reweightDatasets/data_{}M_{}M_xbbscoreHbbDijetsWithCalculatedWeights.h5'.format(args.train, args.test))
+        save_hdf5(data,  './reweightDatasets/extractedData.h5')
         pass
 
     return

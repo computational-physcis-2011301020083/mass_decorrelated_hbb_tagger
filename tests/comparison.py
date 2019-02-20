@@ -148,9 +148,9 @@ def perform_studies (data, args, tagger_features, ann_vars):
     #     pass
 
     # Perform jet mass distribution comparison study
-    with Profile("Study: Jet mass comparison"):
-        studies.jetmasscomparison(data, args, tagger_features)
-        pass
+    # with Profile("Study: Jet mass comparison"):
+    #     studies.jetmasscomparison(data, args, tagger_features)
+    #     pass
 
     # Perform summary plot study
     # with Profile("Study: Summary plot"):
@@ -175,18 +175,18 @@ def perform_studies (data, args, tagger_features, ann_vars):
     #     pass
 
     # Perform ROC study
-    with Profile("Study: ROC"):
-        for masscut, pt_range in itertools.product(masscuts, pt_ranges):
-            studies.roc(data, args, tagger_features, masscut=masscut, pt_range=pt_range)
-            pass
-        pass
-    
-    # # Perform JSD study
-    # with Profile("Study: JSD"):
-    #     for pt_range in pt_ranges:
-    #         studies.jsd(data, args, tagger_features, pt_range)
+    # with Profile("Study: ROC"):
+    #     for masscut, pt_range in itertools.product(masscuts, pt_ranges):
+    #         studies.roc(data, args, tagger_features, masscut=masscut, pt_range=pt_range)
     #         pass
     #     pass
+    
+    # # Perform JSD study
+    with Profile("Study: JSD"):
+        for pt_range in pt_ranges:
+            studies.jsd(data, args, tagger_features, pt_range)
+            pass
+        pass
 
     # # Perform efficiency study
     # with Profile("Study: Efficiency"):

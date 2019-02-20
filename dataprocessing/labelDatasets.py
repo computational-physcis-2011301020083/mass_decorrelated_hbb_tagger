@@ -1,4 +1,5 @@
 import pandas as pd
+import glob
 
 hCountKey = "GhostHBosonsCount"
 bCountKey = "GhostBHadronsFinalCount"
@@ -37,26 +38,23 @@ def isQcd(row_label):
     else:
         return 0
 
-
-with open("./dataprocessing/expandedHbbTopDatasets.txt", "rU") as f:
-    lines = f.readlines()
-
-sourceDatasets = [x.strip() for x in lines]
+filePaths = glob.glob("./hbbDijetsDatasets/*.h5")
 
 totalNumEvent = 0
 totalNumSignal = 0
 
-for sourceDataset in sourceDatasets:
-    print "processing " + sourceDataset
+for filePath in filePaths:
 
-    filePath = "./hbbTopDatasets/" + sourceDataset
+    sourceDataset = filePath.split('/')[2]
+
+    print "processing " + sourceDataset
 
     fatjet_key = "fat_jet"
     fatjet_columns = ["Tau32_wta", "e3", "Qw", "eta", "Tau21_wta", "C2", "D2", "Angularity", "Aplanarity", "FoxWolfram20", "KtDR", "PlanarFlow", "Split12", "ZCut12", "mcEventWeight", "eventNumber", "mass", "pt", "label"]
 
     df = pd.read_hdf(filePath, fatjet_key)
 
-    isHiggsSample = "H" in sourceDataset
+    isHiggsSample = "_H" in sourceDataset
 
     df["label"] = df.apply(lambda row: label_row(row, isHiggsSample), axis=1)
 
@@ -99,7 +97,7 @@ for sourceDataset in sourceDatasets:
     totalNumEvent = totalNumEvent + numEvent
     totalNumSignal = totalNumSignal + numSignal
 
-    newDfFilePath = "./processedDatasets_xbbscore_reformat_hbbDijetsnumEvents/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
+    newDfFilePath = "./labelledHbbTopDatasets/" + sourceDataset.split(".h5")[0] + "_"+ str(numEvent) + "_" + str(numSignal) + ".h5"
 
     print "saving " + newDfFilePath
     print "total number of events: " + str(totalNumEvent)
