@@ -67,7 +67,7 @@ This will place the processed extractedData.h5 file in reweightDatasets/
 
 5. Append all other columns back
 ````
-$ python -m prepro.reweightData --train <test events to subsample in millions> --test <test events to subsample in millions> --max-processes <max concurrent processes to be spun off>
+$ python dataprocessing/appendData.py
 ````
 This will place the processed data.h5 file in input/
 
