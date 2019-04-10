@@ -84,7 +84,7 @@ def main (args):
 
     # Tagger feature collection
     # tagger_features = ['NN', ann_var]
-    tagger_features = ['NN', ann_var, 'MV2c10']
+    tagger_features = ['NN', ann_var, 'MV2c10','XbbScoreHiggs']
     # tagger_features = ['MV2c10']
 
     # Add variables
@@ -122,7 +122,7 @@ def main (args):
 
 
     # Remove unused variables
-    used_variables = set(tagger_features + ann_vars + ['m', 'pt', 'npv', 'weight_test'])
+    used_variables = set(tagger_features + ann_vars + ['mass', 'pt', 'npv', 'weight_test'])
     unused_variables = [var for var in list(data) if var not in used_variables]
     data.drop(columns=unused_variables)
     gc.collect()
