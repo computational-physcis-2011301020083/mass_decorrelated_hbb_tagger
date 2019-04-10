@@ -71,8 +71,8 @@ def jsd (data_, args, features, pt_range):
 
             # Get histograms / plot
             c = rp.canvas(batch=not args.show)
-            h_pass = c.hist(data.loc[ msk_pass & msk, 'm'].values, bins=MASSBINS, weights=data.loc[ msk_pass & msk, 'weight_test'].values, normalise=True, **histstyle[True])   #, display=False)
-            h_fail = c.hist(data.loc[~msk_pass & msk, 'm'].values, bins=MASSBINS, weights=data.loc[~msk_pass & msk, 'weight_test'].values, normalise=True, **histstyle[False])  #, display=False)
+            h_pass = c.hist(data.loc[ msk_pass & msk, 'mass'].values, bins=MASSBINS, weights=data.loc[ msk_pass & msk, 'weight_test'].values, normalise=True, **histstyle[True])   #, display=False)
+            h_fail = c.hist(data.loc[~msk_pass & msk, 'mass'].values, bins=MASSBINS, weights=data.loc[~msk_pass & msk, 'weight_test'].values, normalise=True, **histstyle[False])  #, display=False)
 
             # Convert to numpy arrays
             p = root_numpy.hist2array(h_pass)
