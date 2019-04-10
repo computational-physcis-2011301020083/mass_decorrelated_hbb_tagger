@@ -74,11 +74,7 @@ def main ():
         for sig in [0,1]:
 
             # Select samples belonging to current category
-            if sig == 0:
-                msk = (data['signal'] == 0) & (data["dsid"] > 360000)
-            else:
-                msk = (data["signal"] == 1)
-
+            msk = data["signal"==sig]
             # Store reference of samples belonging to other category
             other = np.array(~msk).astype(bool)
 
