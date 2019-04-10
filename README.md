@@ -28,12 +28,9 @@ $ source activate.sh
 # Data-preprocessing
 1. Gather all .h5 datasets into hbbDijetsDatasets/ or hbbTopDatasets/ On PDSF, this can be done by
 ````
-$ python dataprocessing/getHbbDijetsDatasets.py
+$ python dataprocessing/getDatasets.py
 ````
-or
-````
-$ python dataprocessing/getHbbTopDatasets.py
-````
+
 
 Note that the name of each dataset has to follow the following format:
 
@@ -49,13 +46,13 @@ user.dguest.15830705._000040.output_361027_N.h5
   
 2. Label the datasets
 ````
-$ python dataprocessing/labelDatasets.py
+$ python dataprocessing/labelHbbDatasets.py
 ````
 This will place the labelled datasets into labelledHbbDijetsDatasets/ or labelledHbbTopDatasets/
 
 3. Extract necessary columns for reweighting (we will add the other columns back after reweighting)
 ````
-$ python dataprocessing/extractPtAndWeight.py
+$ python dataprocessing/extractedPt.py
 ````
 This will place the labelled datasets into extractedHbbDijetsDatasets/ or extractedHbbTopDatasets/
 
@@ -67,7 +64,7 @@ This will place the processed extractedData.h5 file in reweightDatasets/
 
 5. Append all other columns back
 ````
-$ python dataprocessing/appendData.py
+$ python dataprocessing/appendHbbTop.py
 ````
 This will place the processed data.h5 file in input/
 
