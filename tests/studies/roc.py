@@ -44,7 +44,7 @@ def roc (data_, args, features, masscut=False, pt_range=(200, 2000)):
         pass
 
     # (Opt.) masscut | @NOTE: Duplication with adversarial/utils/metrics.py
-    msk = (data['m'] > 60.) & (data['m'] < 100.) if masscut else np.ones_like(data['signal']).astype(bool)
+    msk = (data['mass'] > 50.) & (data['mass'] < 300.) if masscut else np.ones_like(data['signal']).astype(bool)
 
     # Computing ROC curves
     ROCs = dict()
@@ -149,10 +149,10 @@ def plot (*argv):
     c.ylabel("Background rejection 1/#varepsilon_{bkg}^{rel}")
     c.text([], xmin=0.15, ymax=0.96, qualifier=QUALIFIER)
     c.text(["#sqrt{s} = 13 TeV",
-            "#it{Hbb} jet tagging"] + (
+            "#it{Hbb} vs. #it{Dijets}"] + (
                 ["p_{{T}} #in  [{:.0f}, {:.0f}] GeV".format(pt_range[0], pt_range[1])] if pt_range is not None else []
             ) + (
-                ["Cut: m #in  [60, 100] GeV"] if masscut else []
+                ["Cut: m #in  [50, 300] GeV"] if masscut else []
             ),
            ATLAS=False)
 
