@@ -23,7 +23,7 @@ for sourceDatasetWithFlag in sourceDatasetsWithFlags:
               if flag=="N":
                 dirname="/global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/DijetsDatasets"
                 os.popen("cp " + filepath + "   /global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/DijetsDatasets")
-                #os.popen("cp " + filepath + " ./hbbDijetsDatasets/")
+    
         
                 oldFileName = filepath.split("/")[-1]
                 newFileName = oldFileName.split('.h5')[0] + "_" + dsid + "_" + flag + ".h5"
@@ -33,23 +33,23 @@ for sourceDatasetWithFlag in sourceDatasetsWithFlags:
               if flag=="T":
                 dirname="/global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/TopDatasets"
                 os.popen("cp " + filepath + "    /global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/TopDatasets")
-                #os.popen("cp " + filepath + " ./hbbDijetsDatasets/")
+     
         
                 oldFileName = filepath.split("/")[-1]
                 newFileName = oldFileName.split('.h5')[0] + "_" + dsid + "_" + flag + ".h5"
                
                 os.popen("mv " +dirname+"/"+ oldFileName + "   "+dirname+"/"+ newFileName)
-                #os.popen("mv ./hbbDijetsDatasets/" + oldFileName + " ./hbbDijetsDatasets/" + newFileName)
+              
 
               if flag=="H":
                 dirname="/global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/HbbDatasets"
                 os.popen("cp " + filepath + "    /global/project/projectdirs/atlas/massDecorrelatedXbb/adversarial-wei1/datasets/HbbDatasets")
-                #os.popen("cp " + filepath + " ./hbbDijetsDatasets/")
+               
         
                 oldFileName = filepath.split("/")[-1]
                 newFileName = oldFileName.split('.h5')[0] + "_" + dsid + "_" + flag + ".h5"
 
-                #os.popen("mv ./hbbDijetsDatasets/" + oldFileName + " ./hbbDijetsDatasets/" + newFileName)
+         
                 os.popen("mv " +dirname+"/"+ oldFileName + "   "+dirname+"/"+ newFileName)
 
 
