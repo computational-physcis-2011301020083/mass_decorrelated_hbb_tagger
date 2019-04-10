@@ -104,7 +104,7 @@ def plot (*argv):
             histstyle[signal].update(base)
             for ipad, pad in enumerate(c.pads()[1:], 1):
                 histstyle[signal]['option'] = 'HIST'
-                pad.hist(data.loc[msk, 'm'].values, weights=data.loc[msk, 'weight_test'].values, **histstyle[signal])
+                pad.hist(data.loc[msk, 'mass'].values, weights=data.loc[msk, 'weight_test'].values, **histstyle[signal])
                 pass
             pass
 
@@ -133,7 +133,7 @@ def plot (*argv):
             cfg.update(opts)
             msk = (data['signal'] == 0) & msks_pass[feat]
             pad = c.pads()[1 + ifeat//2]
-            pad.hist(data.loc[msk, 'm'].values, weights=data.loc[msk, 'weight_test'].values, label=" " + latex(feat, ROOT=True), **cfg)
+            pad.hist(data.loc[msk, 'mass'].values, weights=data.loc[msk, 'weight_test'].values, label=" " + latex(feat, ROOT=True), **cfg)
             pass
 
         # -- Legend(s)
@@ -280,7 +280,7 @@ def plot_individual (*argv):
                     msk = data['signal'] == signal
                     histstyle[signal].update(base)
                     histstyle[signal]['option'] = 'HIST'
-                    c.hist(data.loc[msk, 'm'].values, weights=data.loc[msk, 'weight_test'].values, **histstyle[signal])
+                    c.hist(data.loc[msk, 'mass'].values, weights=data.loc[msk, 'weight_test'].values, **histstyle[signal])
                     pass
 
                 for sig in [True, False]:
@@ -297,7 +297,7 @@ def plot_individual (*argv):
                     cfg = dict(**base)
                     cfg.update(opts)
                     msk = (data['signal'] == 0) & msks_pass[feat]
-                    c.hist(data.loc[msk, 'm'].values, weights=data.loc[msk, 'weight_test'].values, label=" " + latex(feat, ROOT=True), **cfg)
+                    c.hist(data.loc[msk, 'mass'].values, weights=data.loc[msk, 'weight_test'].values, label=" " + latex(feat, ROOT=True), **cfg)
                     pass
 
                 # -- Legend(s)
